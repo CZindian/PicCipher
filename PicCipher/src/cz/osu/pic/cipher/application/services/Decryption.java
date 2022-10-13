@@ -1,5 +1,6 @@
 package cz.osu.pic.cipher.application.services;
 
+import cz.osu.pic.cipher.application.exceptions.NoFileInUriException;
 import cz.osu.pic.cipher.application.exceptions.FileOrDirectoryDoesNotExistException;
 import cz.osu.pic.cipher.application.exceptions.AnyTextToDecryptException;
 import cz.osu.pic.cipher.application.exceptions.UnsupportedImageSuffixException;
@@ -40,7 +41,8 @@ public class Decryption {
 
         try {
             imageBytes = StorageManager.loadImageBytes(consoleInput);
-        } catch (FileOrDirectoryDoesNotExistException | IOException | UnsupportedImageSuffixException e) {
+        } catch (FileOrDirectoryDoesNotExistException | IOException |
+                 UnsupportedImageSuffixException | NoFileInUriException e) {
             System.out.println("-" + e.getMessage());
             System.out.println("Try again:");
             listenConsoleInput();

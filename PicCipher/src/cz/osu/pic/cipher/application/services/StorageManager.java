@@ -1,5 +1,6 @@
 package cz.osu.pic.cipher.application.services;
 
+import cz.osu.pic.cipher.application.exceptions.NoFileInUriException;
 import cz.osu.pic.cipher.application.exceptions.FileOrDirectoryDoesNotExistException;
 import cz.osu.pic.cipher.application.exceptions.UnsupportedImageSuffixException;
 import org.apache.commons.io.FileUtils;
@@ -14,7 +15,8 @@ public class StorageManager {
     private static String imgUri;
 
     public static byte[] loadImageBytes(String uri)
-            throws FileOrDirectoryDoesNotExistException, UnsupportedImageSuffixException, IOException {
+            throws FileOrDirectoryDoesNotExistException, UnsupportedImageSuffixException,
+            IOException, NoFileInUriException {
         checkValidityOf(uri);
         checkValidityOfImgType(uri);
         setImgUri(uri);
@@ -49,15 +51,23 @@ public class StorageManager {
         );
     }
 
-    private static void checkValidityOf(String uri) throws FileOrDirectoryDoesNotExistException {
+    private static void checkValidityOf(String uri)
+            throws FileOrDirectoryDoesNotExistException, NoFileInUriException {
         Path path = Paths.get(uri);
         if (!Files.exists(path))
             throw new FileOrDirectoryDoesNotExistException(uri);
     }
 
-    private static void checkValidityOfImgType(String uri) throws UnsupportedImageSuffixException {
+    private static void checkValidityOfImgType(String uri)
+            throws UnsupportedImageSuffixException, NoFileInUriException {
         int dotIndex = uri.lastIndexOf(".");
-        String suffix = uri.substring(dotIndex);
+        String suffix;
+
+        try {
+            suffix = uri.substring(dotIndex);
+        } catch (StringIndexOutOfBoundsException e) {
+            throw new NoFileInUriException(uri);
+        }
 
         switch (suffix) {
             case ".jpeg", ".jpg", ".png" -> {
