@@ -43,7 +43,7 @@ public class Decryption {
             imageBytes = StorageManager.loadImageBytes(consoleInput);
         } catch (FileOrDirectoryDoesNotExistException | IOException |
                  UnsupportedImageSuffixException | NoFileInUriException e) {
-            System.out.println("-" + e.getMessage());
+            System.out.println(e.getMessage());
             System.out.println("Try again:");
             listenConsoleInput();
         }
