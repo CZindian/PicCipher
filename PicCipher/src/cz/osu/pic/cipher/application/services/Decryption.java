@@ -5,7 +5,6 @@ import cz.osu.pic.cipher.application.exceptions.AnyTextToDecryptException;
 import cz.osu.pic.cipher.application.exceptions.UnsupportedImageSuffixException;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 import static cz.osu.pic.cipher.application.Utils.getConsoleInput;
@@ -24,8 +23,10 @@ public class Decryption {
         System.out.println("Type complete url to your image.");
         System.out.println("\t-example: root/dir/dir2/di3/image.jpg");
         listenConsoleInput();
+
         System.out.println("Decrypted message:");
         decryptImage();
+        resetAttributes();
     }
 
     private static void listenConsoleInput() {
@@ -36,6 +37,7 @@ public class Decryption {
     }
 
     private static void loadImage() {
+
         try {
             imageBytes = StorageManager.loadImageBytes(consoleInput);
         } catch (FileOrDirectoryDoesNotExistException | IOException | UnsupportedImageSuffixException e) {
@@ -48,19 +50,21 @@ public class Decryption {
 
     private static void decryptImage() {
         String decryptedText = null;
+
         try {
             decryptedText = getDecryptedText();
             System.out.println(decryptedText);
-            resetImageData(imageString, encryptedText);
-        } catch (AnyTextToDecryptException e) {
+
+            StorageManager.deleteExisting();
+        } catch (AnyTextToDecryptException | IOException e) {
             System.out.println(e.getMessage());
         }
-        resetAttributes();
+
     }
 
     //region Util methods
     private static String getDecryptedText() throws AnyTextToDecryptException {
-        imageString = new String(imageBytes, StandardCharsets.UTF_8);
+        imageString = new String(imageBytes);
         encryptedText = getEncryptedText(imageString);
         return encryptedText;
     }
@@ -102,17 +106,6 @@ public class Decryption {
         imageBytes = null;
         encryptedText = null;
         imageString = null;
-    }
-
-    private static void resetImageData(String input, String encodedText) {
-        String dataToDelete = getDataToDelete(encodedText);
-        byte[] data = input.replace(dataToDelete, "").getBytes();
-
-        try {
-            StorageManager.saveEncodedData(data);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
 }
