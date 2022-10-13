@@ -5,7 +5,6 @@ import cz.osu.pic.cipher.application.exceptions.AnyTextToDecryptException;
 import cz.osu.pic.cipher.application.exceptions.UnsupportedImageSuffixException;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 import static cz.osu.pic.cipher.application.Utils.getConsoleInput;
@@ -24,6 +23,7 @@ public class Decryption {
         System.out.println("Type complete url to your image.");
         System.out.println("\t-example: root/dir/dir2/di3/image.jpg");
         listenConsoleInput();
+
         System.out.println("Decrypted message:");
         decryptImage();
         resetAttributes();
@@ -37,6 +37,7 @@ public class Decryption {
     }
 
     private static void loadImage() {
+
         try {
             imageBytes = StorageManager.loadImageBytes(consoleInput);
         } catch (FileOrDirectoryDoesNotExistException | IOException | UnsupportedImageSuffixException e) {
@@ -49,14 +50,16 @@ public class Decryption {
 
     private static void decryptImage() {
         String decryptedText = null;
+
         try {
             decryptedText = getDecryptedText();
             System.out.println(decryptedText);
+
             StorageManager.deleteExisting();
-            //resetImageData(imageString, encryptedText);
         } catch (AnyTextToDecryptException | IOException e) {
             System.out.println(e.getMessage());
         }
+
     }
 
     //region Util methods
@@ -103,19 +106,6 @@ public class Decryption {
         imageBytes = null;
         encryptedText = null;
         imageString = null;
-    }
-
-    private static void resetImageData(String input, String encodedText) {
-        String dataToDelete = getDataToDelete(encodedText);
-        String test = input.replace(dataToDelete, "#");
-        byte[] data = test.getBytes();
-
-        try {
-            StorageManager.deleteExisting();
-            StorageManager.saveEncodedData(data);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
 }
