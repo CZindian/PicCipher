@@ -29,6 +29,11 @@ public class StorageManager {
         resetAttributes();
     }
 
+    public static void deleteExisting() throws IOException {
+        File f = new File(imgUri);
+        if (!f.delete()) throw new IOException("File was not deleted");
+    }
+
     //region Setters
     private static void setImgUri(String uri) {
         imgUri = uri;

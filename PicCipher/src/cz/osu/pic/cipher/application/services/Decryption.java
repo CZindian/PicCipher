@@ -26,6 +26,7 @@ public class Decryption {
         listenConsoleInput();
         System.out.println("Decrypted message:");
         decryptImage();
+        resetAttributes();
     }
 
     private static void listenConsoleInput() {
@@ -51,16 +52,16 @@ public class Decryption {
         try {
             decryptedText = getDecryptedText();
             System.out.println(decryptedText);
-            resetImageData(imageString, encryptedText);
-        } catch (AnyTextToDecryptException e) {
+            StorageManager.deleteExisting();
+            //resetImageData(imageString, encryptedText);
+        } catch (AnyTextToDecryptException | IOException e) {
             System.out.println(e.getMessage());
         }
-        resetAttributes();
     }
 
     //region Util methods
     private static String getDecryptedText() throws AnyTextToDecryptException {
-        imageString = new String(imageBytes, StandardCharsets.UTF_8);
+        imageString = new String(imageBytes);
         encryptedText = getEncryptedText(imageString);
         return encryptedText;
     }
@@ -106,9 +107,11 @@ public class Decryption {
 
     private static void resetImageData(String input, String encodedText) {
         String dataToDelete = getDataToDelete(encodedText);
-        byte[] data = input.replace(dataToDelete, "").getBytes();
+        String test = input.replace(dataToDelete, "#");
+        byte[] data = test.getBytes();
 
         try {
+            StorageManager.deleteExisting();
             StorageManager.saveEncodedData(data);
         } catch (IOException e) {
             throw new RuntimeException(e);

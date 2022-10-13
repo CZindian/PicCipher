@@ -23,6 +23,7 @@ public class Encryption {
 
         System.out.println("Type text to encode. Use english alphabet only!");
         encodeConsoleInput();
+        resetAttributes();
     }
 
     private static void listenConsoleInput() {
@@ -47,7 +48,6 @@ public class Encryption {
 
         try {
             StorageManager.saveEncodedData(encodedData);
-            resetAttributes();
         } catch (IOException e) {
             System.out.println("-" + e.getMessage());
         }
