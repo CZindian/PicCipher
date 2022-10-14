@@ -29,7 +29,7 @@ public class Encryption {
         System.out.println("\t-example: root/dir/dir2/di3/image.jpg" + ANSI_RESET);
         listenConsoleInput();
 
-        System.out.println(ANSI_RED + "Type text to encode. Use english alphabet only!" + ANSI_RESET);
+        System.out.println(ANSI_RED + "Type text to encode." + ANSI_RESET);
         encodeConsoleInput();
         resetAttributes();
     }
