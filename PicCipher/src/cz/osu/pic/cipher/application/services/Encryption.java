@@ -25,11 +25,11 @@ public class Encryption {
      * Main encryption method.
      */
     public static void run() {
-        System.out.println(TEXT_GREEN + "Type complete url to your image.");
-        System.out.println("\t-example: root/dir/dir2/di3/image.jpg" + TEXT_YELLOW);
+        System.out.println(ANSI_GREEN + "Type complete url to your image.");
+        System.out.println("\t-example: root/dir/dir2/di3/image.jpg" + ANSI_RESET);
         listenConsoleInput();
 
-        System.out.println(TEXT_RED + "Type text to encode. Use english alphabet only!" + TEXT_GREEN);
+        System.out.println(ANSI_RED + "Type text to encode. Use english alphabet only!" + ANSI_RESET);
         encodeConsoleInput();
         resetAttributes();
     }
@@ -62,7 +62,7 @@ public class Encryption {
         try {
             StorageManager.saveEncodedData(encodedData);
         } catch (IOException e) {
-            System.out.println("-" + e.getMessage());
+            System.out.println(ANSI_YELLOW + "-" + e.getMessage() + ANSI_RESET);
         }
 
     }
@@ -92,8 +92,8 @@ public class Encryption {
             imageBytes = StorageManager.loadImageBytes(consoleInput);
         } catch (FileOrDirectoryDoesNotExistException | IOException |
                  NoFileInUriException | UnsupportedImageSuffixException e) {
-            System.out.println(e.getMessage());
-            System.out.println(TEXT_GREEN + "Try again:" + TEXT_YELLOW);
+            System.out.println(ANSI_YELLOW + e.getMessage() + ANSI_RESET);
+            System.out.println(ANSI_GREEN + "Try again:" + ANSI_RESET);
             listenConsoleInput();
         }
 

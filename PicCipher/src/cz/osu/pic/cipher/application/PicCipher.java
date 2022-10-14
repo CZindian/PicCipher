@@ -18,14 +18,14 @@ public class PicCipher {
      * Main program run method.
      */
     public static void run() {
-        System.out.println(TEXT_RED + "Welcome!\nThis app will encrypt / decrypt your message.");
+        System.out.println(ANSI_RED + "Welcome!\nThis app will encrypt / decrypt your message." + ANSI_RESET);
         listenConsoleInput();
     }
 
     //region Util methods
     private static void listenConsoleInput() {
         resetConsoleInput();
-        System.out.println(TEXT_GREEN + "To start choose 'e' for encryption or 'd' for decryption.");
+        System.out.println(ANSI_GREEN + "To start choose 'e' for encryption or 'd' for decryption." + ANSI_RESET);
         consoleInput = getConsoleInput(
                 new Scanner(System.in)
         );
@@ -46,7 +46,7 @@ public class PicCipher {
             listenConsoleInputExit();
         } catch (IllegalConsoleInputException | AnyTextToDecryptException e) {
             System.out.println(e.getMessage());
-            System.out.println(TEXT_GREEN + "Choose 'e' for encryption or 'd' for decryption");
+            System.out.println(ANSI_GREEN + "Choose 'e' for encryption or 'd' for decryption" + ANSI_RESET);
             listenConsoleInput();
         }
 
@@ -54,7 +54,7 @@ public class PicCipher {
 
     private static void listenConsoleInputExit() {
 
-        System.out.println(TEXT_GREEN + "Do you want to exit the program? (y/n)");
+        System.out.println(ANSI_GREEN + "Do you want to exit the program? (y/n)" + ANSI_RESET);
         consoleInput = getConsoleInput(
                 new Scanner(System.in)
         );

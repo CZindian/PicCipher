@@ -30,10 +30,10 @@ public class Decryption {
      * @throws AnyTextToDecryptException when there is any text to decrypt in given image
      */
     public static void run() throws AnyTextToDecryptException {
-        System.out.println(TEXT_GREEN + "Type complete url to your image.\n\t-example: root/dir/dir2/di3/image.jpg");
+        System.out.println(ANSI_GREEN + "Type complete url to your image.\n\t-example: root/dir/dir2/di3/image.jpg" + ANSI_RESET);
         listenConsoleInput();
 
-        System.out.println(TEXT_RED + "Decrypted message:" + TEXT_YELLOW);
+        System.out.println(ANSI_RED + "Decrypted message:" + ANSI_RESET);
         decryptImage();
         resetAttributes();
     }
@@ -54,8 +54,8 @@ public class Decryption {
             imageBytes = StorageManager.loadImageBytes(consoleInput);
         } catch (FileOrDirectoryDoesNotExistException | IOException |
                  UnsupportedImageSuffixException | NoFileInUriException e) {
-            System.out.println(TEXT_YELLOW+ e.getMessage());
-            System.out.println(TEXT_GREEN + "Try again:");
+            System.out.println(ANSI_YELLOW + e.getMessage() + ANSI_RESET);
+            System.out.println(ANSI_GREEN + "Try again:" + ANSI_RESET);
             listenConsoleInput();
         }
 
@@ -72,10 +72,9 @@ public class Decryption {
         try {
             decryptedText = getDecryptedText();
             System.out.println(decryptedText);
-
             StorageManager.deleteExisting();
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.out.println(ANSI_YELLOW + e.getMessage() + ANSI_RESET);
         }
 
     }
