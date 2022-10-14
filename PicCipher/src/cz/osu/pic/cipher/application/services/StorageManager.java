@@ -10,10 +10,22 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * Manipulates save, load, delete.
+ */
 public class StorageManager {
 
     private static String imgUri;
 
+    /**
+     * Loads image from disc
+     * @param uri complete uri to img file (includes image name too)
+     * @return image asy byte array
+     * @throws FileOrDirectoryDoesNotExistException occurs, when directory or file that does not exist
+     * @throws UnsupportedImageSuffixException occurs, when file contain unsupported suffix (.jpg .jpeg .png are supported)
+     * @throws IOException might occur, when loading data from disc
+     * @throws NoFileInUriException occurs, when uri does not contain file
+     */
     public static byte[] loadImageBytes(String uri)
             throws FileOrDirectoryDoesNotExistException, UnsupportedImageSuffixException,
             IOException, NoFileInUriException {
@@ -23,6 +35,11 @@ public class StorageManager {
         return getImageBytes(uri);
     }
 
+    /**
+     * Saves encrypted image to disc
+     * @param data encrypted image byte array
+     * @throws IOException might occur, when write data to disc
+     */
     public static void saveEncodedData(byte[] data) throws IOException {
         OutputStream out = new FileOutputStream(imgUri);
         out.write(data);
@@ -31,6 +48,10 @@ public class StorageManager {
         resetAttributes();
     }
 
+    /**
+     * Deletes file from disc. Should be used, when text is encrypted.
+     * @throws IOException might occur, when file cannot be deleted
+     */
     public static void deleteExisting() throws IOException {
         File f = new File(imgUri);
         if (!f.delete())
@@ -78,6 +99,9 @@ public class StorageManager {
     }
     //endregion
 
+    /**
+     * Resets class attributes.
+     */
     private static void resetAttributes() {
         imgUri = null;
     }

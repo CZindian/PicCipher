@@ -11,6 +11,9 @@ import java.util.Scanner;
 import static cz.osu.pic.cipher.application.Utils.getConsoleInput;
 import static cz.osu.pic.cipher.application.services.utils.Constant.SYMPTOM;
 
+/**
+ * Decrypts secret text from image.
+ */
 public class Decryption {
 
     //region Attributes
@@ -20,9 +23,12 @@ public class Decryption {
     private static String encryptedText;
     //endregion
 
-    public static void run() {
-        System.out.println("Type complete url to your image.");
-        System.out.println("\t-example: root/dir/dir2/di3/image.jpg");
+    /**
+     * Main decryption method.
+     * @throws AnyTextToDecryptException when there is any text to decrypt in given image
+     */
+    public static void run() throws AnyTextToDecryptException {
+        System.out.println("Type complete url to your image.\n\t-example: root/dir/dir2/di3/image.jpg");
         listenConsoleInput();
 
         System.out.println("Decrypted message:");
@@ -37,20 +43,27 @@ public class Decryption {
         loadImage();
     }
 
+    /**
+     * Loads image from disc and cashes for later use.
+     */
     private static void loadImage() {
 
         try {
             imageBytes = StorageManager.loadImageBytes(consoleInput);
         } catch (FileOrDirectoryDoesNotExistException | IOException |
                  UnsupportedImageSuffixException | NoFileInUriException e) {
-            System.out.println("-" + e.getMessage());
+            System.out.println(e.getMessage());
             System.out.println("Try again:");
             listenConsoleInput();
         }
 
     }
 
-    private static void decryptImage() {
+    /**
+     * Decrypts encoded text from given image.
+     * @throws AnyTextToDecryptException when there is any text to decrypt in given image
+     */
+    private static void decryptImage() throws AnyTextToDecryptException {
         String decryptedText = null;
 
         try {
@@ -58,7 +71,7 @@ public class Decryption {
             System.out.println(decryptedText);
 
             StorageManager.deleteExisting();
-        } catch (AnyTextToDecryptException | IOException e) {
+        } catch (IOException e) {
             System.out.println(e.getMessage());
         }
 
@@ -103,6 +116,9 @@ public class Decryption {
     }
     //endregion
 
+    /**
+     * Resets class attributes.
+     */
     private static void resetAttributes() {
         consoleInput = null;
         imageBytes = null;
