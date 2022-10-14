@@ -7,7 +7,8 @@ import cz.osu.pic.cipher.application.exceptions.UnsupportedImageSuffixException;
 import java.io.IOException;
 import java.util.Scanner;
 
-import static cz.osu.pic.cipher.application.Utils.getConsoleInput;
+import static cz.osu.pic.cipher.utils.TextColors.*;
+import static cz.osu.pic.cipher.utils.Utils.getConsoleInput;
 import static cz.osu.pic.cipher.application.services.utils.Constant.SYMPTOM;
 
 /**
@@ -24,11 +25,11 @@ public class Encryption {
      * Main encryption method.
      */
     public static void run() {
-        System.out.println("Type complete url to your image.");
-        System.out.println("\t-example: root/dir/dir2/di3/image.jpg");
+        System.out.println(TEXT_GREEN + "Type complete url to your image.");
+        System.out.println("\t-example: root/dir/dir2/di3/image.jpg" + TEXT_YELLOW);
         listenConsoleInput();
 
-        System.out.println("Type text to encode. Use english alphabet only!");
+        System.out.println(TEXT_RED + "Type text to encode. Use english alphabet only!" + TEXT_GREEN);
         encodeConsoleInput();
         resetAttributes();
     }
@@ -92,7 +93,7 @@ public class Encryption {
         } catch (FileOrDirectoryDoesNotExistException | IOException |
                  NoFileInUriException | UnsupportedImageSuffixException e) {
             System.out.println(e.getMessage());
-            System.out.println("Try again:");
+            System.out.println(TEXT_GREEN + "Try again:" + TEXT_YELLOW);
             listenConsoleInput();
         }
 

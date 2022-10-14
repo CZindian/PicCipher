@@ -1,4 +1,4 @@
-package cz.osu.pic.cipher.application;
+package cz.osu.pic.cipher.utils;
 
 import java.util.Scanner;
 
