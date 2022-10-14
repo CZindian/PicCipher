@@ -18,7 +18,7 @@ public class PicCipher {
      * Main program run method.
      */
     public static void run() {
-        System.out.println(TEXT_RED + "Welcome!\nThis app will encrypt / decrypt your message.");
+        System.out.println(TEXT_RED + "Welcome!\n This app will encrypt / decrypt your message.");
         listenConsoleInput();
     }
 
