@@ -3,8 +3,8 @@
     <output-path>$PROJECT_DIR$/out/artifacts/PicCipher_jar</output-path>
     <root id="archive" name="PicCipher.jar">
       <element id="module-output" name="PicCipher" />
-      <element id="extracted-dir" path="$USER_HOME$/Downloads/commons-io-2.11.0/commons-io-2.11.0-tests.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Downloads/commons-io-2.11.0/commons-io-2.11.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/commons-io-2.11.0/commons-io-2.11.0-tests.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/commons-io-2.11.0/commons-io-2.11.0.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>
