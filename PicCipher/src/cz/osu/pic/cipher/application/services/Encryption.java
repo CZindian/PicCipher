@@ -10,6 +10,9 @@ import java.util.Scanner;
 import static cz.osu.pic.cipher.application.Utils.getConsoleInput;
 import static cz.osu.pic.cipher.application.services.utils.Constant.SYMPTOM;
 
+/**
+ * Encrypts user text to given image.
+ */
 public class Encryption {
 
     //region Attributes
@@ -17,6 +20,9 @@ public class Encryption {
     private static byte[] imageBytes;
     //endregion
 
+    /**
+     * Main encryption method.
+     */
     public static void run() {
         System.out.println("Type complete url to your image.");
         System.out.println("\t-example: root/dir/dir2/di3/image.jpg");
@@ -34,6 +40,9 @@ public class Encryption {
         loadImage();
     }
 
+    /**
+     * Loads text from console and calls encodeConsoleInputToImage().
+     */
     private static void encodeConsoleInput() {
         consoleInput = getConsoleInput(
                 new Scanner(System.in)
@@ -41,7 +50,9 @@ public class Encryption {
         encodeConsoleInputToImage();
     }
 
-    //region Util methods
+    /**
+     * Encodes user text to given image.
+     */
     private static void encodeConsoleInputToImage() {
         byte[] encodedConsoleInput = getEncodedConsoleInput();
         byte[] encodedData = getEncodedData(encodedConsoleInput);
@@ -55,6 +66,7 @@ public class Encryption {
 
     }
 
+    //region Util methods
     private static void copyByteArraysTo(byte[] encodedData, byte[] encodedConsoleInput) {
         System.arraycopy(imageBytes, 0, encodedData, 0, imageBytes.length);
         System.arraycopy(encodedConsoleInput, 0, encodedData, imageBytes.length, encodedConsoleInput.length);
@@ -87,6 +99,9 @@ public class Encryption {
     }
     //endregion
 
+    /**
+     * Resets class attributes.
+     */
     private static void resetAttributes() {
         consoleInput = null;
         imageBytes = null;
