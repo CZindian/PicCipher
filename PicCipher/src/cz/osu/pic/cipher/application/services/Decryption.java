@@ -8,7 +8,8 @@ import cz.osu.pic.cipher.application.exceptions.UnsupportedImageSuffixException;
 import java.io.IOException;
 import java.util.Scanner;
 
-import static cz.osu.pic.cipher.application.Utils.getConsoleInput;
+import static cz.osu.pic.cipher.utils.TextColors.*;
+import static cz.osu.pic.cipher.utils.Utils.getConsoleInput;
 import static cz.osu.pic.cipher.application.services.utils.Constant.SYMPTOM;
 
 /**
@@ -25,13 +26,14 @@ public class Decryption {
 
     /**
      * Main decryption method.
+     *
      * @throws AnyTextToDecryptException when there is any text to decrypt in given image
      */
     public static void run() throws AnyTextToDecryptException {
-        System.out.println("Type complete url to your image.\n\t-example: root/dir/dir2/di3/image.jpg");
+        System.out.println(TEXT_GREEN + "Type complete url to your image.\n\t-example: root/dir/dir2/di3/image.jpg");
         listenConsoleInput();
 
-        System.out.println("Decrypted message:");
+        System.out.println(TEXT_RED + "Decrypted message:" + TEXT_YELLOW);
         decryptImage();
         resetAttributes();
     }
@@ -52,8 +54,8 @@ public class Decryption {
             imageBytes = StorageManager.loadImageBytes(consoleInput);
         } catch (FileOrDirectoryDoesNotExistException | IOException |
                  UnsupportedImageSuffixException | NoFileInUriException e) {
-            System.out.println(e.getMessage());
-            System.out.println("Try again:");
+            System.out.println(TEXT_YELLOW+ e.getMessage());
+            System.out.println(TEXT_GREEN + "Try again:");
             listenConsoleInput();
         }
 
@@ -61,6 +63,7 @@ public class Decryption {
 
     /**
      * Decrypts encoded text from given image.
+     *
      * @throws AnyTextToDecryptException when there is any text to decrypt in given image
      */
     private static void decryptImage() throws AnyTextToDecryptException {

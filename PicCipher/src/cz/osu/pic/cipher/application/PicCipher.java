@@ -7,7 +7,8 @@ import cz.osu.pic.cipher.application.services.Encryption;
 
 import java.util.Scanner;
 
-import static cz.osu.pic.cipher.application.Utils.getConsoleInput;
+import static cz.osu.pic.cipher.utils.TextColors.*;
+import static cz.osu.pic.cipher.utils.Utils.getConsoleInput;
 
 public class PicCipher {
 
@@ -17,15 +18,14 @@ public class PicCipher {
      * Main program run method.
      */
     public static void run() {
-        System.out.println("Welcome!\nThis app will encrypt / decrypt your message.");
+        System.out.println(TEXT_RED + "Welcome!\nThis app will encrypt / decrypt your message.");
         listenConsoleInput();
-        listenConsoleInputExit();
     }
 
     //region Util methods
     private static void listenConsoleInput() {
         resetConsoleInput();
-        System.out.println("To start choose 'e' for encryption or 'd' for decryption.");
+        System.out.println(TEXT_GREEN + "To start choose 'e' for encryption or 'd' for decryption.");
         consoleInput = getConsoleInput(
                 new Scanner(System.in)
         );
@@ -43,9 +43,10 @@ public class PicCipher {
                 case "d" -> Decryption.run();
                 default -> throw new IllegalConsoleInputException(consoleInput);
             }
+            listenConsoleInputExit();
         } catch (IllegalConsoleInputException | AnyTextToDecryptException e) {
             System.out.println(e.getMessage());
-            System.out.println("Choose 'e' for encryption or 'd' for decryption");
+            System.out.println(TEXT_GREEN + "Choose 'e' for encryption or 'd' for decryption");
             listenConsoleInput();
         }
 
@@ -53,7 +54,7 @@ public class PicCipher {
 
     private static void listenConsoleInputExit() {
 
-        System.out.println("Do you want to exit the program? (y/n)");
+        System.out.println(TEXT_GREEN + "Do you want to exit the program? (y/n)");
         consoleInput = getConsoleInput(
                 new Scanner(System.in)
         );
