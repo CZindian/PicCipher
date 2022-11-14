@@ -1,13 +1,10 @@
 package cz.osu.pic.cipher.application.services;
 
-import cz.osu.pic.cipher.application.exceptions.NoFileInUriException;
-import cz.osu.pic.cipher.application.exceptions.FileOrDirectoryDoesNotExistException;
-import cz.osu.pic.cipher.application.exceptions.UnsupportedImageSuffixException;
+import cz.osu.pic.cipher.application.exceptions.*;
 
 import java.io.IOException;
 import java.util.Scanner;
 
-import static cz.osu.pic.cipher.utils.TextColors.*;
 import static cz.osu.pic.cipher.utils.Utils.getConsoleInput;
 import static cz.osu.pic.cipher.application.services.utils.Constant.SYMPTOM;
 
@@ -18,6 +15,7 @@ public class Encryption {
 
     //region Attributes
     private static String consoleInput;
+    private static String consoleInputPath;
     private static byte[] imageBytes;
     //endregion
 
@@ -25,44 +23,60 @@ public class Encryption {
      * Main encryption method.
      */
     public static void run() {
-        System.out.println(ANSI_GREEN + "Type complete url to your image.");
-        System.out.println("\t-example: root/dir/dir2/di3/image.jpg" + ANSI_RESET);
+        System.out.println("Type current path to your image.");
+        System.out.println("\t-example: C:\\Users\\x\\y\\image.jpg");
         listenConsoleInput();
 
-        System.out.println(ANSI_RED + "Type text to encode." + ANSI_RESET);
-        encodeConsoleInput();
+        System.out.println("Type text to encode.");
+        consoleInput = getConsoleInput(
+                new Scanner(System.in)
+        );
+
+        System.out.println("Type current path, where to save image with hidden text:");
+        System.out.println("\t-example: C:\\Users\\x\\y\\");
+        listenEncode();
+
         resetAttributes();
     }
 
     private static void listenConsoleInput() {
+
         consoleInput = getConsoleInput(
                 new Scanner(System.in)
         );
         loadImage();
+
     }
 
-    /**
-     * Loads text from console and calls encodeConsoleInputToImage().
-     */
-    private static void encodeConsoleInput() {
-        consoleInput = getConsoleInput(
+    private static void listenEncode() {
+
+        consoleInputPath = getConsoleInput(
                 new Scanner(System.in)
         );
         encodeConsoleInputToImage();
+
     }
 
     /**
      * Encodes user text to given image.
      */
     private static void encodeConsoleInputToImage() {
+
         byte[] encodedConsoleInput = getEncodedConsoleInput();
         byte[] encodedData = getEncodedData(encodedConsoleInput);
         copyByteArraysTo(encodedData, encodedConsoleInput);
 
         try {
-            StorageManager.saveEncodedData(encodedData);
+            StorageManager.saveEncodedData(encodedData, consoleInputPath);
+
         } catch (IOException e) {
-            System.out.println(ANSI_YELLOW + "-" + e.getMessage() + ANSI_RESET);
+            System.out.println("\t-" + e.getMessage());
+
+        } catch (DirectoryDoesNotExistException | IllegalPathEndException e) {
+            System.out.println(e.getMessage());
+            System.out.println("Type valid path:");
+            listenEncode();
+
         }
 
     }
@@ -90,11 +104,13 @@ public class Encryption {
 
         try {
             imageBytes = StorageManager.loadImageBytes(consoleInput);
+
         } catch (FileOrDirectoryDoesNotExistException | IOException |
-                 NoFileInUriException | UnsupportedImageSuffixException e) {
-            System.out.println(ANSI_YELLOW + e.getMessage() + ANSI_RESET);
-            System.out.println(ANSI_GREEN + "Try again:" + ANSI_RESET);
+                NoFileInUriException | UnsupportedImageSuffixException e) {
+            System.out.println(e.getMessage());
+            System.out.println("Try again:");
             listenConsoleInput();
+
         }
 
     }
@@ -104,8 +120,11 @@ public class Encryption {
      * Resets class attributes.
      */
     private static void resetAttributes() {
+
         consoleInput = null;
+        consoleInputPath = null;
         imageBytes = null;
+
     }
 
 }
