@@ -7,7 +7,6 @@ import cz.osu.pic.cipher.application.services.Encryption;
 
 import java.util.Scanner;
 
-import static cz.osu.pic.cipher.utils.TextColors.*;
 import static cz.osu.pic.cipher.utils.Utils.getConsoleInput;
 
 public class PicCipher {
@@ -18,18 +17,24 @@ public class PicCipher {
      * Main program run method.
      */
     public static void run() {
-        System.out.println(ANSI_RED + "Welcome!\nThis app will encrypt / decrypt your message." + ANSI_RESET);
+
+        System.out.println("Welcome!");
+        System.out.println("This app will encrypt / decrypt your message.");
+        System.out.println("\t-note: as input image use .jpg, .png or .jpeg");
         listenConsoleInput();
+
     }
 
     //region Util methods
     private static void listenConsoleInput() {
+
         resetConsoleInput();
-        System.out.println(ANSI_GREEN + "To start choose 'e' for encryption or 'd' for decryption." + ANSI_RESET);
+        System.out.println("To start, choose 'e' for encryption or 'd' for decryption.");
         consoleInput = getConsoleInput(
                 new Scanner(System.in)
         );
         processConsoleInput();
+
     }
 
     /**
@@ -44,17 +49,19 @@ public class PicCipher {
                 default -> throw new IllegalConsoleInputException(consoleInput);
             }
             listenConsoleInputExit();
-        } catch (IllegalConsoleInputException | AnyTextToDecryptException e) {
+
+        } catch (IllegalConsoleInputException e) {
             System.out.println(e.getMessage());
-            System.out.println(ANSI_GREEN + "Choose 'e' for encryption or 'd' for decryption" + ANSI_RESET);
+            System.out.println("Choose 'e' for encryption or 'd' for decryption");
             listenConsoleInput();
+
         }
 
     }
 
     private static void listenConsoleInputExit() {
 
-        System.out.println(ANSI_GREEN + "Do you want to exit the program? (y/n)" + ANSI_RESET);
+        System.out.println("Do you want to exit the program? (y/n)");
         consoleInput = getConsoleInput(
                 new Scanner(System.in)
         );

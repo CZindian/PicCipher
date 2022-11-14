@@ -8,7 +8,6 @@ import cz.osu.pic.cipher.application.exceptions.UnsupportedImageSuffixException;
 import java.io.IOException;
 import java.util.Scanner;
 
-import static cz.osu.pic.cipher.utils.TextColors.*;
 import static cz.osu.pic.cipher.utils.Utils.getConsoleInput;
 import static cz.osu.pic.cipher.application.services.utils.Constant.SYMPTOM;
 
@@ -29,20 +28,25 @@ public class Decryption {
      *
      * @throws AnyTextToDecryptException when there is any text to decrypt in given image
      */
-    public static void run() throws AnyTextToDecryptException {
-        System.out.println(ANSI_GREEN + "Type complete url to your image.\n\t-example: root/dir/dir2/di3/image.jpg" + ANSI_RESET);
+    public static void run() {
+
+        System.out.println("Type current path to your image.");
+        System.out.println("\t-example: C:\\Users\\x\\y\\image.jpg");
         listenConsoleInput();
 
-        System.out.println(ANSI_RED + "Decrypted message:" + ANSI_RESET);
+        System.out.println("Decrypted message:");
         decryptImage();
         resetAttributes();
+
     }
 
     private static void listenConsoleInput() {
+
         consoleInput = getConsoleInput(
                 new Scanner(System.in)
         );
         loadImage();
+
     }
 
     /**
@@ -52,11 +56,13 @@ public class Decryption {
 
         try {
             imageBytes = StorageManager.loadImageBytes(consoleInput);
+
         } catch (FileOrDirectoryDoesNotExistException | IOException |
-                 UnsupportedImageSuffixException | NoFileInUriException e) {
-            System.out.println(ANSI_YELLOW + e.getMessage() + ANSI_RESET);
-            System.out.println(ANSI_GREEN + "Try again:" + ANSI_RESET);
+                UnsupportedImageSuffixException | NoFileInUriException e) {
+            System.out.println(e.getMessage());
+            System.out.println("Try again:");
             listenConsoleInput();
+
         }
 
     }
@@ -66,36 +72,46 @@ public class Decryption {
      *
      * @throws AnyTextToDecryptException when there is any text to decrypt in given image
      */
-    private static void decryptImage() throws AnyTextToDecryptException {
-        String decryptedText = null;
+    private static void decryptImage() {
 
         try {
-            decryptedText = getDecryptedText();
+            String decryptedText = getDecryptedText();
             System.out.println(decryptedText);
-            StorageManager.deleteExisting();
+            StorageManager.deleteExisting(consoleInput);
+
+        } catch (AnyTextToDecryptException e) {
+            System.out.println(e.getMessage());
+
         } catch (IOException e) {
-            System.out.println(ANSI_YELLOW + e.getMessage() + ANSI_RESET);
+            System.out.println("\t-" + e.getMessage());
+
         }
 
     }
 
     //region Util methods
     private static String getDecryptedText() throws AnyTextToDecryptException {
+
         imageString = new String(imageBytes);
         encryptedText = getEncryptedText(imageString);
         return encryptedText;
+
     }
 
     private static String getEncryptedText(String input) throws AnyTextToDecryptException {
+
         checkEncryptedImageValidity(input);
         encryptedText = getStringBetween(input);
         return encryptedText;
+
     }
 
     private static String getStringBetween(String input) {
+
         int lastSlashIndex = getLastSymptomIndex(input);
         int penultimateSlashIndex = getPenultimateSlashIndex(input, lastSlashIndex);
         return input.substring(penultimateSlashIndex, lastSlashIndex);
+
     }
 
     private static int getLastSymptomIndex(String input) {
@@ -103,18 +119,18 @@ public class Decryption {
     }
 
     private static int getPenultimateSlashIndex(String input, int lastSlashIndex) {
+
         StringBuilder sb = new StringBuilder(input);
         sb.deleteCharAt(lastSlashIndex);
         return getLastSymptomIndex(sb.toString()) + SYMPTOM.length();
+
     }
 
     private static void checkEncryptedImageValidity(String input) throws AnyTextToDecryptException {
+
         if (!input.contains(SYMPTOM))
             throw new AnyTextToDecryptException();
-    }
 
-    private static String getDataToDelete(String encodedText) {
-        return SYMPTOM + encodedText + SYMPTOM;
     }
     //endregion
 
@@ -122,10 +138,12 @@ public class Decryption {
      * Resets class attributes.
      */
     private static void resetAttributes() {
+
         consoleInput = null;
         imageBytes = null;
         encryptedText = null;
         imageString = null;
+
     }
 
 }
