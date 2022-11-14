@@ -4,6 +4,8 @@ import cz.osu.pic.cipher.application.exceptions.*;
 
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static cz.osu.pic.cipher.utils.Utils.getConsoleInput;
 import static cz.osu.pic.cipher.application.services.utils.Constant.SYMPTOM;
@@ -106,9 +108,15 @@ public class Decryption {
 
     private static String getStringBetween(String input) {
 
-        int lastSlashIndex = getLastSymptomIndex(input);
-        int penultimateSlashIndex = getPenultimateSlashIndex(input, lastSlashIndex);
-        return input.substring(penultimateSlashIndex, lastSlashIndex);
+        Pattern p = Pattern.compile("(?<=symptom).*(?=symptom)");
+        Matcher m = p.matcher(input);
+        
+        StringBuilder sb = new StringBuilder();
+        while (m.find()) {
+            sb.append(m.group());
+        }
+
+        return sb.toString();
 
     }
 
@@ -120,7 +128,8 @@ public class Decryption {
 
         StringBuilder sb = new StringBuilder(input);
         sb.deleteCharAt(lastSlashIndex);
-        return getLastSymptomIndex(sb.toString()) + SYMPTOM.length();
+        int ret = getLastSymptomIndex(sb.toString()) + SYMPTOM.length();
+        return ret;
 
     }
 
