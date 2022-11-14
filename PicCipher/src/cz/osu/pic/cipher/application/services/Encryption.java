@@ -27,7 +27,7 @@ public class Encryption {
         System.out.println("\t-example: C:\\Users\\x\\y\\image.jpg");
         listenConsoleInput();
 
-        System.out.println("Type text to encode.");
+        System.out.println("Type text to encode:");
         consoleInput = getConsoleInput(
                 new Scanner(System.in)
         );
@@ -72,7 +72,7 @@ public class Encryption {
         } catch (IOException e) {
             System.out.println("\t-" + e.getMessage());
 
-        } catch (DirectoryDoesNotExistException | IllegalPathEndException e) {
+        } catch (DirectoryDoesNotExistException | FileOrDirectoryDoesNotExistException e) {
             System.out.println(e.getMessage());
             System.out.println("Type valid path:");
             listenEncode();
@@ -106,7 +106,7 @@ public class Encryption {
             imageBytes = StorageManager.loadImageBytes(consoleInput);
 
         } catch (FileOrDirectoryDoesNotExistException | IOException |
-                NoFileInUriException | UnsupportedImageSuffixException e) {
+                 NoFileInUriException | UnsupportedImageSuffixException e) {
             System.out.println(e.getMessage());
             System.out.println("Try again:");
             listenConsoleInput();

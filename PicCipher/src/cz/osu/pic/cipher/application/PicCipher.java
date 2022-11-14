@@ -19,7 +19,8 @@ public class PicCipher {
     public static void run() {
 
         System.out.println("Welcome!");
-        System.out.println("This app will encrypt / decrypt your message.");
+        System.out.println("This program hides the communication channel in the image.");
+        System.out.println("The program can open this hidden communication channel from the image too.");
         System.out.println("\t-note: as input image use .jpg, .png or .jpeg");
         listenConsoleInput();
 

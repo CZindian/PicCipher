@@ -43,9 +43,10 @@ public class StorageManager {
      * @throws IOException might occur, when write data to disc
      */
     public static void saveEncodedData(byte[] data, String imgUri)
-            throws IOException, DirectoryDoesNotExistException, IllegalPathEndException {
+            throws IOException, DirectoryDoesNotExistException, FileOrDirectoryDoesNotExistException {
         String newUri = getNewUri(imgUri);
         new File(newUri);
+        System.out.println("Encoded is saved in: " + newUri);
 
         OutputStream out = new FileOutputStream(newUri);
         out.write(data);
@@ -64,23 +65,11 @@ public class StorageManager {
             throw new IOException("File was not deleted");
     }
 
-    private static String getNewUri(String imgUri) throws DirectoryDoesNotExistException, IllegalPathEndException {
+    private static String getNewUri(String imgUri) throws DirectoryDoesNotExistException, FileOrDirectoryDoesNotExistException {
+        checkValidityOf(imgUri);
         isDirectoryValid(imgUri);
-        isPathValid(imgUri);
         String[] imgNameParts = imgName.split("\\.");
         return imgUri + imgNameParts[0] + "_" + getLocalDateTime() + "." + imgNameParts[1];
-    }
-
-    private static void isPathValid(String imgUri) throws IllegalPathEndException {
-        char lastChar = 'x';
-        for (int i = 0; i < imgUri.length(); i++) {
-            if (i == imgUri.length()-1){
-                lastChar = imgUri.charAt(i);
-            }
-        }
-        if (lastChar != '\\'){
-            throw new IllegalPathEndException(imgUri);
-        }
     }
 
     //region Util methods
@@ -93,7 +82,7 @@ public class StorageManager {
     private static void checkValidityOf(String uri)
             throws FileOrDirectoryDoesNotExistException {
         Path path = Paths.get(uri);
-        if (!Files.exists(path))
+        if (uri.length() == 0 || !Files.exists(path))
             throw new FileOrDirectoryDoesNotExistException(uri);
     }
 
