@@ -62,11 +62,11 @@ public class Encryption {
      */
     private static void encodeConsoleInputToImage() {
 
-        byte[] encodedConsoleInput = getEncodedConsoleInput();
-        byte[] encodedData = getEncodedData(encodedConsoleInput);
-        copyByteArraysTo(encodedData, encodedConsoleInput);
-
         try {
+            StorageManager.checkValidityOf(consoleInputPath);
+            byte[] encodedConsoleInput = getEncodedConsoleInput();
+            byte[] encodedData = getEncodedData(encodedConsoleInput);
+            copyByteArraysTo(encodedData, encodedConsoleInput);
             StorageManager.saveEncodedData(encodedData, consoleInputPath);
 
         } catch (IOException e) {
@@ -106,7 +106,8 @@ public class Encryption {
             imageBytes = StorageManager.loadImageBytes(consoleInput);
 
         } catch (FileOrDirectoryDoesNotExistException | IOException |
-                 NoFileInUriException | UnsupportedImageSuffixException e) {
+                 NoFileInUriException | UnsupportedImageSuffixException |
+                 DirectoryDoesNotExistException e) {
             System.out.println(e.getMessage());
             System.out.println("Try again:");
             listenConsoleInput();

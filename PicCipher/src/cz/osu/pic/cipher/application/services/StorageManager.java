@@ -28,7 +28,7 @@ public class StorageManager {
      */
     public static byte[] loadImageBytes(String uri)
             throws FileOrDirectoryDoesNotExistException, UnsupportedImageSuffixException,
-            IOException, NoFileInUriException {
+            IOException, NoFileInUriException, DirectoryDoesNotExistException {
         checkValidityOf(uri);
         checkValidityOfImgType(uri);
 
@@ -67,7 +67,6 @@ public class StorageManager {
 
     private static String getNewUri(String imgUri) throws DirectoryDoesNotExistException, FileOrDirectoryDoesNotExistException {
         checkValidityOf(imgUri);
-        isDirectoryValid(imgUri);
         String[] imgNameParts = imgName.split("\\.");
         return imgUri + imgNameParts[0] + "_" + getLocalDateTime() + "." + imgNameParts[1];
     }
@@ -79,11 +78,12 @@ public class StorageManager {
         );
     }
 
-    private static void checkValidityOf(String uri)
-            throws FileOrDirectoryDoesNotExistException {
+    public static void checkValidityOf(String uri)
+            throws FileOrDirectoryDoesNotExistException, DirectoryDoesNotExistException {
         Path path = Paths.get(uri);
         if (uri.length() == 0 || !Files.exists(path))
             throw new FileOrDirectoryDoesNotExistException(uri);
+        isDirectoryValid(uri);
     }
 
     private static void isDirectoryValid(String imgUri) throws DirectoryDoesNotExistException {
