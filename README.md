@@ -1,0 +1,1 @@
+- [Different approach Branch](https://github.com/CZindian/PicCipher/tree/differentApproach): Code is available in the differentApproach branch.
